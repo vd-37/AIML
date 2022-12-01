@@ -1,0 +1,56 @@
+import numpy as np
+import pandas as pd
+data = pd.DataFrame(data=pd.read_csv("C:\\Users\\ML-11\\Desktop\\For Exam Dataset for ML\\Prog 2b-data22_sports.csv"))
+print('Data1 Set\n\n',data)
+
+
+
+concepts=np.array(data.iloc[:,0:-1])
+print('Concept \n',concepts)
+
+
+target=np.array(data.iloc[:,-1])
+print('Target \n',target)
+
+
+def learn(concepts,target):
+    specific_h = [0,0,0,0,0,0]
+    print('s0 \n',specific_h)
+    specific_h=concepts[0].copy()
+    print('s1 \n',specific_h)
+    general_h = [["?" for i in range(len(specific_h))] for i in range(len(specific_h))]
+    print("g0 \n",general_h)
+    for i,h in enumerate(concepts):
+        print('i1 ',i)
+        print('h1 ',h)        
+        if target[i]=="Yes":
+            for x in range(len(specific_h)):
+                print('x1 ',x)              
+                if h[x]!=specific_h[x]:
+                    specific_h[x]='?'
+                    general_h[x][x]='?'
+                    print("specific {} ".format(specific_h))
+                    print("general {} ".format(general_h))                  
+                if target[i] == "No":
+                    for x in range(len(specific_h)):
+                        print("x2 ",x)                   
+                    if h[x] != specific_h[x]:
+                        general_h[x][x] = specific_h[x]                 
+                    else:
+                        general_h[x][x] = "?"         
+    indices = [i for i,val in enumerate(general_h) if val==["?","?","?","?","?","?"]]
+    for i in indices:
+        print("i8 ",i)        
+        general_h.remove(["?","?","?","?","?","?"])  
+    print("i9 ",indices)
+    return specific_h,general_h
+     
+
+
+s_final,g_final = learn(concepts,target)
+
+
+
+print('Final S :',s_final,sep="\n")
+print('Final G:',g_final,sep="\n")                   
+                        
